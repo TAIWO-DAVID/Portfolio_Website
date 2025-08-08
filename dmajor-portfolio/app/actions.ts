@@ -1,12 +1,19 @@
-"use server"
+type ActionResponse = {
+  ok: boolean
+  message: string
+}
 
-export async function sendContact(prev: any, formData: FormData) {
+export async function sendContact(
+  prev: ActionResponse,
+  formData: FormData
+): Promise<ActionResponse> {
   await new Promise((r) => setTimeout(r, 600))
   const name = String(formData.get("name") || "").trim()
   const email = String(formData.get("email") || "").trim()
   const message = String(formData.get("message") || "").trim()
 
-  if (!name || !email || !message) return { ok: false, message: "Please fill out all fields." }
-  // In production: send email or store in DB here.
+  if (!name || !email || !message)
+    return { ok: false, message: "Please fill out all fields." }
+
   return { ok: true, message: `Thanks ${name}, I’ll reply to ${email} soon.` }
 }
